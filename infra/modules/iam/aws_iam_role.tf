@@ -1,4 +1,5 @@
 resource "aws_iam_role" "main_role" {
+  name = "lambda_role"
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
@@ -14,6 +15,26 @@ resource "aws_iam_role" "main_role" {
   })
 
   tags = {
-    Name = "${var.app_name}-app-iam-role"
+    Name = "${var.app_name}-lambda-iam-role"
+  }
+}
+
+resource "aws_iam_role" "kendra_role" {
+  name = "kendra_role"
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = "sts:AssumeRole"
+        Effect = "Allow"
+        Sid    = ""
+        Principal = {
+          Service = "kendra.amazonaws.com"
+        }
+      }
+    ]
+  })
+  tags = {
+    Name = "${var.app_name}-kendra-iam-role"
   }
 }

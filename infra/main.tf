@@ -14,8 +14,26 @@ provider "aws" {
 
 # IAM
 module "iam" {
-  source   = "./modules/iam"
+  source           = "./modules/iam"
+  app_name         = var.app_name
+  region           = var.region
+  s3_bucket_name   = module.s3.s3_bucket_name
+  kendra_index_arn = module.kendra.kendra_index_arn
+}
+
+# S3
+module "s3" {
+  source   = "./modules/s3"
   app_name = var.app_name
+  region   = var.region
+}
+
+# kendra
+module "kendra" {
+  source          = "./modules/kendra"
+  app_name        = var.app_name
+  s3_bucket_name  = module.s3.s3_bucket_name
+  iam_role_kendra = module.iam.iam_role_kendra
 }
 
 # lambda
@@ -24,13 +42,6 @@ module "lambda" {
   iam_role_lambda   = module.iam.iam_role_lambda
   app_name          = var.app_name
   api_execution_arn = module.apigateway.api_execution_arn
-}
-
-# S3
-module "s3" {
-  source   = "./modules/s3"
-  app_name = var.app_name
-  region   = var.region
 }
 
 # apigateway
