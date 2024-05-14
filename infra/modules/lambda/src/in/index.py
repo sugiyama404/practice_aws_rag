@@ -1,66 +1,123 @@
-import base64
 import json
 import os
-import pymysql
 
-ENDPOINT=os.environ["db_host"]
-PORT=3306
-USER=os.environ["db_user"]
-PASS=os.environ["db_pass"]
-DBNAME=os.environ["db_name"]
-os.environ['LIBMYSQL_ENABLE_CLEARTEXT_PLUGIN'] = '1'
+import boto3
 
-def execute_sql(cur):
-    try:
-        sql = """
-        CREATE TABLE IF NOT EXISTS users (
-        id INT AUTO_INCREMENT PRIMARY KEY,
-        username VARCHAR(255) DEFAULT NULL,
-        email VARCHAR(255) DEFAULT NULL,
-        password VARCHAR(255) DEFAULT NULL,
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-        );
-        """
-        cur.execute(sql)
-    except pymysql.Error as e:
-        print(f"エラーが発生しました: {e}")
-        cur.rollback()
+index_id = os.getenv("INDEX_ID")
 
-conn =  pymysql.connect(host=ENDPOINT, user=USER, passwd=PASS, port=PORT, database=DBNAME)
-cur = conn.cursor()
+kendra = boto3.client("kendra", region_name="us-east-1")
+bedrock_runtime_client = boto3.client("bedrock-runtime", region_name="us-east-1")
 
-def lambda_handler(event, context):
-    execute_sql(cur)
-    try:
-        username = event.get('username')
-        email = event.get('email')
-        password = event.get('password')
+def get_retrieval_result(query_text: str, index_id: str) -> list[dict[str, str]]:
+    """
+    Kendraに質問文を投げて検索結果を取得する
 
-        sql = "INSERT INTO users (username, email, password) VALUES (%s, %s, %s)"
-        cur.execute(sql, (username, email, password,))
-        return  {
-        'statusCode': 200,
-        'body': json.dumps({}),
-        'headers': {
-            'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Headers': 'Content-Type',
-            'Access-Control-Allow-Methods': 'OPTIONS,POST,GET'
+    Args:
+        query_text (str): 質問文
+        index_id (str): Kendra インデックス ID
+
+    Returns:
+        list: 検索結果のリスト
+    """
+    # Kendra に質問文を投げて検索結果を取得
+    response = kendra.retrieve(
+        QueryText=query_text,
+        IndexId=index_id,
+        AttributeFilter={
+            "EqualsTo": {
+                "Key": "_language_code",
+                "Value": {"StringValue": "ja"},
+            },
         },
+    )
+
+    # 検索結果から上位5つを抽出
+    results = response["ResultItems"][:5] if response["ResultItems"] else []
+
+    # 検索結果の中から文章とURIのみを抽出
+    extracted_results = []
+    for item in results:
+        content = item.get("Content")
+        document_uri = item.get("DocumentURI")
+
+        extracted_results.append(
+            {
+                "Content": content,
+                "DocumentURI": document_uri,
+            }
+        )
+    return extracted_results
+
+def get_answer_from_bedrock(
+    user_prompt: str, kendra_response: list[dict[str, str]]
+) -> str:
+    """
+    Kendraからの検索結果を元にBedrocから質問への回答を取得する
+
+    Args:
+        user_prompt (str): 質問文
+        kendra_response (list[dict[str, str]]): Kendraからの検索結果
+    Returns:
+        str: 回答
+    """
+
+    # プロンプトの作成
+    prompt = f"""\n\nHuman:
+    [参考]情報をもとに[質問]に適切に答えてください。
+    [質問]
+    {user_prompt}
+    [参考]
+    {kendra_response}
+    Assistant:
+    """
+
+    # 各種設定
+    modelId = "anthropic.claude-v2"
+    accept = "application/json"
+    contentType = "application/json"
+
+    body = json.dumps(
+        {
+            "prompt": prompt,
+            "max_tokens_to_sample": 600,
         }
-    except:
-        import traceback
-        err = traceback.format_exc()
-        print(err)
-        return {
-          'statusCode' : 500,
-          'headers' : {
-            'context-type' : 'text/json',
-            'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Headers': 'Content-Type',
-            'Access-Control-Allow-Methods': 'OPTIONS,POST,GET'
-          },
-          'body' : json.dumps({
-            'error' : '内部エラーが発生しました'
-            })
-          }
+    )
+
+    # bedrockからのレスポンスを受け取る
+    response = bedrock_runtime_client.invoke_model(
+        modelId=modelId, accept=accept, contentType=contentType, body=body
+    )
+    response_body = json.loads(response.get("body").read())
+
+    return response_body.get("completion")
+
+
+def lambda_handler(event: dict, context) -> dict:
+    """
+    Lambda ハンドラー関数
+
+    Args:
+        event (dict): Lambda のイベント
+        context : Lambda のコンテキスト
+
+    Returns:
+        dict: Lambda のレスポンス
+    """
+    # Lambda のイベントからユーザーの入力を取得
+    # user_prompt = event.get("user_prompt")
+
+    # API-Gateway からのリクエストを取得
+    body = json.loads(event["body"])
+    user_prompt = body["user_prompt"]
+
+    # Kendra に質問文を投げて検索結果を取得
+    # index_id (str): Kendra インデックス ID
+    kendra_response = get_retrieval_result(user_prompt, index_id)
+
+    # Bedrockからのレスポンスを受け取る
+    response_body = get_answer_from_bedrock(user_prompt, kendra_response)
+
+    return {
+        "statusCode": 200,
+        "body": json.dumps(response_body, ensure_ascii=False),
+    }

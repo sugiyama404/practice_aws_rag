@@ -16,8 +16,11 @@ resource "aws_lambda_function" "main" {
   runtime          = "python3.9"
   depends_on       = [aws_cloudwatch_log_group.lambda.name]
 
-  # environment {
-  # }
+  environment {
+    variables = {
+      INDEX_ID = var.kendra_index_id
+    }
+  }
   tags = {
     Name = "${var.app_name}-lamdba"
   }
