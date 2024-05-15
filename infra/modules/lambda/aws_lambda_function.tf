@@ -14,7 +14,7 @@ resource "aws_lambda_function" "main" {
   source_code_hash = data.archive_file.lambda.output_base64sha256
   timeout          = 30
   runtime          = "python3.9"
-  depends_on       = [aws_cloudwatch_log_group.lambda.name]
+  depends_on       = [aws_cloudwatch_log_group.lambda]
 
   environment {
     variables = {

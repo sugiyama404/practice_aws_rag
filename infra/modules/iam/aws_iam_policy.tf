@@ -1,7 +1,6 @@
 # Bedrock動作用のポリシー
 resource "aws_iam_policy" "bedrock" {
-  name        = "BedrockAccessPolicy"
-  description = "Policy allowing Bedrock actions"
+  name = "BedrockAccessPolicy"
 
   policy = jsonencode({
     "Version" : "2012-10-17",
@@ -16,13 +15,12 @@ resource "aws_iam_policy" "bedrock" {
 }
 # Kendraのデータ読み取り用のポリシー
 resource "aws_iam_policy" "lambda_to_kendra" {
-  name        = "LambdaToKendraPolicy"
-  description = "Policy allowing Kendra actions"
-
+  name = "LambdaToKendraPolicy"
   policy = jsonencode({
     "Version" : "2012-10-17",
     "Statement" : [
       {
+        "Sid" : "AllowKendraRetrieve",
         "Effect" : "Allow",
         "Action" : "kendra:Retrieve",
         "Resource" : "${var.kendra_index_arn}"

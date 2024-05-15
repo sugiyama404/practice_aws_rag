@@ -5,8 +5,8 @@ import boto3
 
 index_id = os.getenv("INDEX_ID")
 
-kendra = boto3.client("kendra", region_name="us-east-1")
-bedrock_runtime_client = boto3.client("bedrock-runtime", region_name="us-east-1")
+kendra = boto3.client("kendra", region_name="ap-northeast-1")
+bedrock_runtime_client = boto3.client("bedrock-runtime", region_name="ap-northeast-1")
 
 def get_retrieval_result(query_text: str, index_id: str) -> list[dict[str, str]]:
     """
@@ -72,7 +72,8 @@ def get_answer_from_bedrock(
     """
 
     # 各種設定
-    modelId = "anthropic.claude-v2"
+    # modelId = "anthropic.claude-v2"
+    modelId = "amazon.titan-text-express-v1"
     accept = "application/json"
     contentType = "application/json"
 
@@ -104,14 +105,9 @@ def lambda_handler(event: dict, context) -> dict:
         dict: Lambda のレスポンス
     """
     # Lambda のイベントからユーザーの入力を取得
-    # user_prompt = event.get("user_prompt")
-
-    # API-Gateway からのリクエストを取得
-    body = json.loads(event["body"])
-    user_prompt = body["user_prompt"]
+    user_prompt = event.get("user_prompt")
 
     # Kendra に質問文を投げて検索結果を取得
-    # index_id (str): Kendra インデックス ID
     kendra_response = get_retrieval_result(user_prompt, index_id)
 
     # Bedrockからのレスポンスを受け取る
