@@ -1,0 +1,29 @@
+services:
+  web:
+    restart: always
+    build:
+      context: ./webserver
+      target: development
+    container_name: "web_chatbot"
+    tty: true
+    command: npm run dev
+    environment:
+    - API_ENDPOINT="http://api:8000"
+    volumes:
+      - ./webserver/app:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - 80:80
+  api:
+    restart: always
+    build: ./apserver
+    container_name: "api_chatbot"
+    working_dir: /opt
+    command: ["python","app/main.py"]
+    volumes:
+      - ./apserver:/opt
+    tty: true
+    ports:
+      - 8000:8000
+
+
