@@ -3,7 +3,7 @@ resource "aws_kendra_data_source" "main" {
   name          = "${var.app_name}-s3-datasource"
   type          = "S3"
   role_arn      = var.iam_role_kendra
-  depends_on    = [aws_cloudwatch_log_group.kendra]
+  depends_on    = [aws_cloudwatch_log_group.kendra, null_resource.default]
   language_code = "ja"
   configuration {
     s3_configuration {

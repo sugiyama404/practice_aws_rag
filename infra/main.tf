@@ -19,12 +19,6 @@ module "s3" {
   region   = var.region
 }
 
-# BASH
-module "bash" {
-  source       = "./modules/bash"
-  s3_bucket_id = module.s3.s3_bucket_id
-}
-
 # IAM
 module "iam" {
   source           = "./modules/iam"
@@ -40,6 +34,7 @@ module "kendra" {
   app_name        = var.app_name
   s3_bucket_name  = module.s3.s3_bucket_name
   iam_role_kendra = module.iam.iam_role_kendra
+  s3_bucket_id    = module.s3.s3_bucket_id
 }
 
 # lambda
