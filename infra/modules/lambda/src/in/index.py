@@ -55,12 +55,13 @@ def get_answer_from_bedrock(user_query: str, kendra_response: dict[str, str]) ->
     response_body = json.loads(response.get("body").read())
     return response_body['results'][0]['outputText']
 
-def create_response_dict(status_code:int, body:str):
+def create_response_dict(status_code: int, answer: str) -> dict:
   return {
       "statusCode": status_code,
-      "body": body,
+      "body": {
+          "answer": answer
+      }
   }
-
 def lambda_handler(event, context):
     user_query = event.get("user_query")
     if not user_query:
@@ -71,5 +72,5 @@ def lambda_handler(event, context):
         return create_response_dict(200, "humm... Document not founding...")
 
     bedrock_answer = get_answer_from_bedrock(user_query, kendra_answer)
-    return create_response_dict(200, json.dumps(bedrock_answer, ensure_ascii=False))
+    return create_response_dict(200, bedrock_answer)
 
