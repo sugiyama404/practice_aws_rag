@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "cypress": "cypress open",
-    "test": "cypress run --headless"
+    "test": "cypress run"
   },
   "dependencies": {
     "next": "14.2.3",

@@ -21,6 +21,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
+      - uses: browser-actions/setup-chromium@latest
+
       - name: Launching the Docker Container
         run: |
           docker-compose up -d
