@@ -13,11 +13,21 @@ export const Form = () => {
         setNewMessage(event.target.value);
     };
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
         if (newMessage) {
             const newMessages = [...messages, [newMessage, false]];
             setMessages(newMessages);
+            const res = await fetch('/api', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ "user_query": newMessage }),
+            });
+            const answer = await res.json();
+            const newMessages2 = [...newMessages, [answer.answer, true]];
+            setMessages(newMessages2);
             setNewMessage('');
         }
     };

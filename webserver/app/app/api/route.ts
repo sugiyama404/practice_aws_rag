@@ -4,9 +4,17 @@ import { NextResponse, NextRequest } from 'next/server'
 const target: string = process.env.API_ENDPOINT;
 
 export async function POST(request: NextRequest) {
-    const res = await fetch(`target`, {
-        cache: "no-store",
+    console.log("call me");
+    const query = await request.json();
+    console.log(query.user_query);
+    const res = await fetch(target, {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ "user_query": query.user_query }),
     });
+
     const ans = await res.json();
-    return new Response(ans.answer)
+    return NextResponse.json(ans);
 }
