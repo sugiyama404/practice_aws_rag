@@ -5,7 +5,7 @@ from pydantic import BaseModel
 app = FastAPI()
 
 class Query(BaseModel):
-    query: str
+    user_query: str
 
 @app.api_route('/', methods=['GET', 'HEAD'])
 async def health_check():
@@ -13,9 +13,9 @@ async def health_check():
 
 @app.api_route('/', methods=['POST', 'HEAD'])
 def post_answer(query: Query):
-    if query.query is None:
+    if query.user_query is None:
         return {"answer": "Please input query"}
-    return {"answer": query.query + "humm .. message accept"}
+    return {"answer": query.user_query + "humm .. message accept"}
 
 
 if __name__ == "__main__":
