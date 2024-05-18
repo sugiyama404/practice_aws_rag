@@ -1,4 +1,4 @@
-describe('Sample Tests', () => {
+describe('Index Tests', () => {
   it('loads the homepage', () => {
     cy.visit('/')
     cy.get('h3').contains('社内文章検索システム')
