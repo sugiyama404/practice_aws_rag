@@ -6,7 +6,7 @@ on:
       - main
       - feature-webser-and-localenv
     paths:
-      - apserver/**
+      - webserver/**
       - .github/workflows/**
 
 defaults:
