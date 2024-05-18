@@ -25,8 +25,9 @@ jobs:
         run: |
           docker-compose up -d
 
-      - name: Cypress run
-        run: ipconfig
+      - name: local healthcheck
+        run: |
+          bin/local_healthcheck
 
       - name: Running Tests
         run: |
