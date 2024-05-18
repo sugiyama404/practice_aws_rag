@@ -25,6 +25,15 @@ jobs:
         run: |
           docker-compose up -d
 
+          - name: Install Chrome
+          run: |
+          docker-compose run web apt update && sudo apt install -y chromium
+
+      - name: Run E2E Tests
+        run: |
+          # テスト対象のWebアプリケーションのURLを指定
+          chromium http://localhost:80/
+
       - name: Running Tests
         run: |
           docker-compose run web npm run test

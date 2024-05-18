@@ -15,6 +15,6 @@ module.exports = defineConfig({
       */
       // return require('cypress/plugins/index.js')(on, config)
     },
-    baseUrl: 'http://[::1]:80',
+    baseUrl: 'http://localhost:80',
   },
 })
