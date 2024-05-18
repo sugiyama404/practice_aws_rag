@@ -26,7 +26,7 @@ jobs:
           docker-compose up -d
 
       - name: Cypress run
-        run: ping http://localhost/
+        run: ping http://127.0.0.1:80/
 
       - name: Running Tests
         run: |
