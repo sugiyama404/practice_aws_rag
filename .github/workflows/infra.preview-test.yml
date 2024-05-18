@@ -25,8 +25,10 @@ jobs:
         run: |
           docker-compose up -d
 
-      - name: sleep for waiting launch db
-        run: sleep 120s
+          - name: Cypress run
+          uses: cypress-io/github-action@v6
+          with:
+            config: pageLoadTimeout=100000,baseUrl=http://localhost:80
 
       - name: Running Tests
         run: |
