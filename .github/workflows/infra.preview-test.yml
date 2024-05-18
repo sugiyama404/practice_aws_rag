@@ -25,6 +25,9 @@ jobs:
         run: |
           docker-compose up -d
 
+      - name: sleep for waiting launch db
+        run: sleep 120s
+
       - name: Running Tests
         run: |
           docker-compose run web npm run test
