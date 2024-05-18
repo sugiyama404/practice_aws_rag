@@ -32,5 +32,5 @@ jobs:
 
       - name: Running Tests
         run: |
-          docker-compose exec web npm run test
+          docker-compose exec -t web npm run test
 
