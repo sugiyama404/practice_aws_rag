@@ -6,7 +6,7 @@ services:
       target: development
     container_name: "web_chatbot"
     tty: true
-    command: npm run dev
+    command: ["npm", "run", "dev"]
     environment:
     - API_ENDPOINT=http://api:8000/
     volumes:
