@@ -21,11 +21,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Install Chrome
-        run: |
-          sudo wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
-          sudo apt update
-          sudo apt-get install google-chrome-stable
+      - uses: cypress-io/github-action@v6
 
       - name: Launching the Docker Container
         run: |
