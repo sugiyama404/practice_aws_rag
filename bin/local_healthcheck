@@ -20,7 +20,7 @@ function local_healthcheck() {
       HEALTHY=0
       break
     elif [ "${STATUS_CODE}" -eq 000 ]; then
-      echo "container is not running......"
+      echo "container is not running or building now......"
       HEALTHY=2
     else
       echo "[$((i + 1))/$CHECK_COUNT] アクセス失敗: ステータスコード $STATUS_CODE"
