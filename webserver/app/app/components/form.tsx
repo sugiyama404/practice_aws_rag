@@ -6,7 +6,7 @@ import { AiMessge } from "./ai_msg";
 import { UserMessge } from './user_msg';
 
 export const Form = () => {
-    const [messages, setMessages] = useState([["ご用件をお聞かせください。", true]]);
+    const [messages, setMessages] = useState([]);
     const [newMessage, setNewMessage] = useState('');
 
     const handleChange = (event) => {
@@ -35,6 +35,14 @@ export const Form = () => {
     return (
         <>
             <div className="flex-grow overflow-auto p-4">
+                <div className="flex-grow overflow-auto p-1">
+                    <div className="flex flex-row mb-4">
+                        <div className="w-10 h-10 bg-blue-300 rounded-full flex items-center justify-center mx-3">AI</div>
+                        <div className="flex-grow ml-4 bg-gray-200 rounded-lg p-2">
+                            <p>ご用件をお聞かせください。</p>
+                        </div>
+                    </div>
+                </div>
                 {messages.map((message, index) => (
                     <div key={index}>
                         {message[1] ? <AiMessge message={message[0]} /> : <UserMessge message={message[0]} />}
