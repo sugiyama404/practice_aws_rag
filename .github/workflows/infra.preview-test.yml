@@ -27,7 +27,8 @@ jobs:
 
       - name: local healthcheck
         run: |
-          bin/local_healthcheck
+          chmod +x bin/local_healthcheck
+          ./bin/local_healthcheck
 
       - name: Running Tests
         run: |
