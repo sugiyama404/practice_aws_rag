@@ -25,10 +25,10 @@ jobs:
         run: |
           docker-compose up -d
 
-          - name: Cypress run
-          uses: cypress-io/github-action@v6
-          with:
-            config: pageLoadTimeout=100000,baseUrl=http://localhost:80
+      - name: Cypress run
+        uses: cypress-io/github-action@v6
+        with:
+          config: pageLoadTimeout=100000,baseUrl=http://localhost:80
 
       - name: Running Tests
         run: |
