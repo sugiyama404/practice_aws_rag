@@ -4,5 +4,5 @@ locals {
 }
 variable "app_name" {}
 variable "region" {}
-variable "s3_bucket_name" {}
-variable "kendra_index_arn" {}
+# variable "s3_bucket_name" {}
+# variable "kendra_index_arn" {}

@@ -1,3 +1,4 @@
+/*
 # Bedrock動作用のポリシー
 resource "aws_iam_policy" "bedrock" {
   name = "BedrockAccessPolicy"
@@ -101,6 +102,41 @@ resource "aws_iam_policy" "cloudwatch_policy" {
         ],
         "Resource" : "arn:aws:logs:${var.region}:${local.account_id}:log-group:/aws/kendra/*:log-stream:*"
       }
+    ]
+  })
+}
+*/
+
+resource "aws_iam_policy" "ecr_policy" {
+  name = "${var.app_name}_ecr_policy"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = [
+          "ecr:*"
+        ]
+        Effect   = "Allow"
+        Resource = "*"
+      },
+    ]
+  })
+}
+
+resource "aws_iam_policy" "cloudwatch_policy" {
+  name = "${var.app_name}_cloudwatch_policy"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = [
+          "logs:*"
+        ]
+        Effect   = "Allow"
+        Resource = "arn:aws:logs:*:*:*"
+      },
     ]
   })
 }
