@@ -1,14 +1,14 @@
-# LbTargetGroup for api
-resource "aws_lb_target_group" "api" {
+# LbTargetGroup for web
+resource "aws_lb_target_group" "web" {
   name        = "${var.app_name}-tg"
   port        = var.api_port
-  protocol    = "TCP"
+  protocol    = "HTTP"
   target_type = "ip"
   vpc_id      = var.main_vpc_id
 
   health_check {
     interval            = 300
-    path                = "/"
+    path                = "/index.html"
     port                = var.api_port
     protocol            = "HTTP"
     timeout             = 120

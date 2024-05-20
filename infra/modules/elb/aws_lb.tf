@@ -2,7 +2,7 @@ resource "aws_lb" "main" {
   name                       = "main-alb"
   internal                   = false
   enable_deletion_protection = false
-  load_balancer_type         = "network"
+  load_balancer_type         = "application"
   security_groups            = [var.sg_alb_id]
   subnets = [
     var.subnet_public_subnet_1a_id,
@@ -10,6 +10,6 @@ resource "aws_lb" "main" {
   ]
 
   tags = {
-    "key" = "main-vpc"
+    "key" = "main-alb"
   }
 }

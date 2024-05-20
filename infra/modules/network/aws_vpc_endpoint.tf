@@ -48,16 +48,16 @@ resource "aws_vpc_endpoint" "logs" {
   }
 }
 
-resource "aws_vpc_endpoint" "api_gateway" {
-  vpc_id              = aws_vpc.main.id
-  service_name        = "com.amazonaws.ap-northeast-1.execute-api"
-  vpc_endpoint_type   = "Interface"
-  private_dns_enabled = true
-  auto_accept         = true
-  subnet_ids          = [aws_subnet.private_subnet_1a.id]
-  security_group_ids  = [aws_security_group.vpc_endpoint_sg.id]
+# resource "aws_vpc_endpoint" "api_gateway" {
+#   vpc_id              = aws_vpc.main.id
+#   service_name        = "com.amazonaws.ap-northeast-1.execute-api"
+#   vpc_endpoint_type   = "Interface"
+#   private_dns_enabled = true
+#   auto_accept         = true
+#   subnet_ids          = [aws_subnet.private_subnet_1a.id]
+#   security_group_ids  = [aws_security_group.vpc_endpoint_sg.id]
 
-  tags = {
-    "Name" = "api-gateway-endpoint"
-  }
-}
+#   tags = {
+#     "Name" = "api-gateway-endpoint"
+#   }
+# }

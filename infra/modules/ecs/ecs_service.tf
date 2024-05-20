@@ -5,7 +5,7 @@ resource "aws_ecs_service" "MainService" {
   desired_count   = 1
 
   load_balancer {
-    target_group_arn = var.lb_target_group_api_arn
+    target_group_arn = var.lb_target_group_web_arn
     container_name   = var.app_name
     container_port   = var.api_port
   }

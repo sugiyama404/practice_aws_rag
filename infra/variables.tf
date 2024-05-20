@@ -19,5 +19,5 @@ variable "image_name" {
 variable "api_port" {
   description = "api port"
   type        = number
-  default     = 80
+  default     = 3000
 }

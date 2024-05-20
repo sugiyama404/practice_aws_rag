@@ -11,8 +11,7 @@ resource "aws_ecs_cluster" "MainCluster" {
   }
 }
 
-resource "aws_ecs_cluster_capacity_providers" "newworld_capacity_providers" {
+resource "aws_ecs_cluster_capacity_providers" "MainCapacityProvider" {
   cluster_name       = "${var.app_name}-cluster"
   capacity_providers = ["FARGATE"]
-
 }

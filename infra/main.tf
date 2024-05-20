@@ -96,9 +96,9 @@ module "ecs" {
   sg_ecs_id                   = module.network.sg_ecs_id
   subnet_private_subnet_1a_id = module.network.subnet_private_subnet_1a_id
   subnet_public_subnet_1a_id  = module.network.subnet_public_subnet_1a_id
-  aws_iam_role                = module.iam.aws_iam_role
+  aws_iam_role                = module.iam.iam_role_ecs
   api_repository_url          = module.ecr.api_repository_url
-  lb_target_group_api_arn     = module.elb.lb_target_group_api_arn
+  lb_target_group_web_arn     = module.elb.lb_target_group_web_arn
   api_port                    = var.api_port
   http_arn                    = module.elb.http_arn
 }
