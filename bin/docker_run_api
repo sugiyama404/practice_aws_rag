@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+function docker_build() {
+  local cwd="$1"
+  local image_name="$2"
+  cd "${cwd}"
+  docker build -t "$image_name" .
+  cd ..
+}
+
+function docker_run_api() {
+  local cwd="$1"
+  local image_name="apserver"
+  local container_name="apserver"
+  local dirname="apserver"
+  local port=8000
+  cd "${cwd}"
+
+  image_id=$(docker images -q "$image_name" 2>/dev/null) || true
+
+  if [[ -n "$image_id" ]]; then
+    echo "Image apserver exists"
+  else
+    echo "Image apserver does not exist"
+    docker_build "${cwd}/${dirname}" "$image_name"
+  fi
+
+  docker run --name "${container_name}" -p "${port}:${port}" -it --rm "${image_name}:latest" python app/main.py
+}
+
+function main() {
+  local cwd
+  cwd="$(cd "$(dirname "$0")/.." && pwd)"
+  docker_run_api "${cwd}"
+}
+
+if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
+  main "$@"
+fi

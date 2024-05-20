@@ -13,21 +13,21 @@ provider "aws" {
 }
 
 # S3
-# module "s3" {
-#   source   = "./modules/s3"
-#   app_name = var.app_name
-#   region   = var.region
-# }
+module "s3" {
+  source   = "./modules/s3"
+  app_name = var.app_name
+  region   = var.region
+}
 
 # IAM
 module "iam" {
-  source   = "./modules/iam"
-  app_name = var.app_name
-  region   = var.region
-  # s3_bucket_name   = module.s3.s3_bucket_name
-  # kendra_index_arn = module.kendra.kendra_index_arn
+  source           = "./modules/iam"
+  app_name         = var.app_name
+  region           = var.region
+  s3_bucket_name   = module.s3.s3_bucket_name
+  kendra_index_arn = module.kendra.kendra_index_arn
 }
-/*
+
 # kendra
 module "kendra" {
   source          = "./modules/kendra"
@@ -54,8 +54,7 @@ module "apigateway" {
   region            = var.region
   app_name          = var.app_name
 }
-*/
-###################################################
+
 # ECR
 module "ecr" {
   source     = "./modules/ecr"
@@ -101,6 +100,7 @@ module "ecs" {
   lb_target_group_web_arn     = module.elb.lb_target_group_web_arn
   api_port                    = var.api_port
   http_arn                    = module.elb.http_arn
+  api_gateway_endpoint        = module.apigateway.api_gateway_endpoint
 }
 
 

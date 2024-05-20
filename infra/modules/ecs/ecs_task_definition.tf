@@ -22,7 +22,7 @@ resource "aws_ecs_task_definition" "MainDefinition" {
       environment = [
         {
           name  = "API_ENDPOINT"
-          value = "http://locaclhost:8000/"
+          value = "${var.api_gateway_endpoint}"
         }
       ]
       logConfiguration = {

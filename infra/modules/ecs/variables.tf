@@ -7,3 +7,4 @@ variable "api_repository_url" {}
 variable "lb_target_group_web_arn" {}
 variable "api_port" {}
 variable "http_arn" {}
+variable "api_gateway_endpoint" {}

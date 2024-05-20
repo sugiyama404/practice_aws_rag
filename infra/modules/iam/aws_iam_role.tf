@@ -1,4 +1,3 @@
-/*
 resource "aws_iam_role" "lambda_role" {
   name = "lambda_role"
   assume_role_policy = jsonencode({
@@ -39,7 +38,7 @@ resource "aws_iam_role" "kendra_role" {
     Name = "${var.app_name}-kendra-iam-role"
   }
 }
-*/
+
 
 resource "aws_iam_role" "ecs_role" {
   name = "ecs_role"

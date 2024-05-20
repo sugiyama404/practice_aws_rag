@@ -5,8 +5,8 @@ resource "aws_iam_policy_attachment" "ecr_attach" {
   policy_arn = aws_iam_policy.ecr_policy.arn
 }
 
-resource "aws_iam_policy_attachment" "cloudwatch_attach" {
-  name       = "${var.app_name}_cloudwatch_attach"
+resource "aws_iam_policy_attachment" "ecs_cloudwatch_attach" {
+  name       = "${var.app_name}_ecs_cloudwatch_attach"
   roles      = ["${aws_iam_role.ecs_role.name}"]
-  policy_arn = aws_iam_policy.cloudwatch_policy.arn
+  policy_arn = aws_iam_policy.ecs_cloudwatch_policy.arn
 }

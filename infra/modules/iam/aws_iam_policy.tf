@@ -1,4 +1,3 @@
-/*
 # Bedrock動作用のポリシー
 resource "aws_iam_policy" "bedrock" {
   name = "BedrockAccessPolicy"
@@ -105,7 +104,6 @@ resource "aws_iam_policy" "cloudwatch_policy" {
     ]
   })
 }
-*/
 
 resource "aws_iam_policy" "ecr_policy" {
   name = "${var.app_name}_ecr_policy"
@@ -124,7 +122,7 @@ resource "aws_iam_policy" "ecr_policy" {
   })
 }
 
-resource "aws_iam_policy" "cloudwatch_policy" {
+resource "aws_iam_policy" "ecs_cloudwatch_policy" {
   name = "${var.app_name}_cloudwatch_policy"
 
   policy = jsonencode({

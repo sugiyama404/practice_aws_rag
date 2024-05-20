@@ -26,7 +26,7 @@ export const AiMessge = ({ message }: AiMessgeProps) => {
                 <div className="flex flex-row mb-4">
                     <div className="w-10 h-10 bg-blue-300 rounded-full flex items-center justify-center mx-3">AI</div>
                     <div className="flex-grow ml-4 bg-gray-200 rounded-lg p-2">
-                        <p>{message.substring(0, currentCharIndex)}</p>
+                        <p>{message ? message.substring(0, currentCharIndex) : ''}</p>
                     </div>
                 </div>
             </div>
