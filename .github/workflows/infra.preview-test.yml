@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - feature-webser-and-localenv
     paths:
       - webserver/**
       - .github/workflows/**
