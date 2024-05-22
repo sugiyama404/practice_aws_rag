@@ -105,5 +105,56 @@ resource "aws_iam_policy" "cloudwatch_policy" {
   })
 }
 
+resource "aws_iam_policy" "ecr_policy" {
+  name = "${var.app_name}_ecr_policy"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = [
+          "ecr:*"
+        ]
+        Effect   = "Allow"
+        Resource = "*"
+      },
+    ]
+  })
+}
+
+resource "aws_iam_policy" "ecs_cloudwatch_policy" {
+  name = "${var.app_name}_cloudwatch_policy"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = [
+          "logs:*"
+        ]
+        Effect   = "Allow"
+        Resource = "arn:aws:logs:*:*:*"
+      },
+    ]
+  })
+}
+
+resource "aws_iam_policy" "api_gateway_access" {
+  name = "${var.app_name}-api-gateway-access-policy"
+  policy = jsonencode({
+    "Version" : "2012-10-17",
+    "Statement" : [
+      {
+        "Effect" : "Allow",
+        "Action" : [
+          "execute-api:Invoke",
+          "execute-api:ManageConnections",
+          "apigateway:*",
+        ],
+        "Resource" : ["arn:aws:execute-api:${var.region}:${local.account_id}:*/*/*"]
+      }
+    ]
+  })
+}
 
 

@@ -32,13 +32,11 @@ def get_answer_from_kendra(query_text: str, index_id: str) -> dict[str, str]:
 
 def get_answer_from_bedrock(user_query: str, kendra_response: dict[str, str]) -> str:
     prompt = f"""
-    [参考資料]を文末に付けた上で,[参考情報]に基づき簡潔に[質問]に答えてください。
+    [参考情報]に基づき簡潔に[質問]に答えてください。
     [質問]
     {user_query}
     [参考情報]
     {kendra_response["Content"]}
-    [参考資料]
-    {kendra_response["DocumentURI"]}
     """
 
     body = json.dumps(
@@ -53,17 +51,23 @@ def get_answer_from_bedrock(user_query: str, kendra_response: dict[str, str]) ->
         body=body
     )
     response_body = json.loads(response.get("body").read())
-    return response_body['results'][0]['outputText']
+    ans = response_body['results'][0]['outputText']
+    ans += f"""
+    [参考資料]
+    {kendra_response["DocumentURI"]}
+    """
+
+    return ans
 
 def create_response_dict(status_code: int, answer: str) -> dict:
   return {
       "statusCode": status_code,
-      "body": {
-          "answer": answer
-      }
+      "body": json.dumps({"answer": answer}, ensure_ascii=False)
   }
 def lambda_handler(event, context):
-    user_query = event.get("user_query")
+    #user_query = event.get("user_query")
+    body = json.loads(event["body"])
+    user_query = body["user_query"]
     if not user_query:
         return create_response_dict(400,  "Missing user query parameter")
 

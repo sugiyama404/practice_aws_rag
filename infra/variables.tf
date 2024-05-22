@@ -13,11 +13,11 @@ variable "region" {
 variable "image_name" {
   description = "application name"
   type        = string
-  default     = "transformer"
+  default     = "chatbot"
 }
 
 variable "api_port" {
   description = "api port"
   type        = number
-  default     = 8000
+  default     = 3000
 }

@@ -4,9 +4,10 @@
 import React, { useState } from 'react';
 import { AiMessge } from "./ai_msg";
 import { UserMessge } from './user_msg';
+import { MessagesState } from '@/types/typing/msg';
 
 export const Form = () => {
-    const [messages, setMessages] = useState([]);
+    const [messages, setMessages] = useState<MessagesState[]>([]);
     const [newMessage, setNewMessage] = useState('');
 
     const handleChange = (event) => {
@@ -16,7 +17,11 @@ export const Form = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
         if (newMessage) {
-            const newMessages = [...messages, [newMessage, false]];
+            const message1: MessagesState = {
+                message: newMessage,
+                flag: false
+            };
+            const newMessages = [...messages, message1];
             setMessages(newMessages);
             const res = await fetch('/api', {
                 method: 'POST',
@@ -26,7 +31,11 @@ export const Form = () => {
                 body: JSON.stringify({ "user_query": newMessage }),
             });
             const answer = await res.json();
-            const newMessages2 = [...newMessages, [answer.answer, true]];
+            const message2: MessagesState = {
+                message: answer.answer,
+                flag: true
+            };
+            const newMessages2 = [...newMessages, message2];
             setMessages(newMessages2);
             setNewMessage('');
         }
@@ -45,7 +54,7 @@ export const Form = () => {
                 </div>
                 {messages.map((message, index) => (
                     <div key={index}>
-                        {message[1] ? <AiMessge message={message[0]} /> : <UserMessge message={message[0]} />}
+                        {message.flag ? <AiMessge message={message.message} /> : <UserMessge message={message.message} />}
                     </div>
                 ))}
             </div>

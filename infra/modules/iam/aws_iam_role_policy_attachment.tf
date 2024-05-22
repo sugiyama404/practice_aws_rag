@@ -29,3 +29,4 @@ resource "aws_iam_role_policy_attachment" "cloudwatch" {
   role       = aws_iam_role.kendra_role.name
   policy_arn = aws_iam_policy.cloudwatch_policy.arn
 }
+

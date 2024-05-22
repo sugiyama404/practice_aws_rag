@@ -20,7 +20,8 @@ resource "aws_api_gateway_rest_api" "main" {
   name = "main"
 
   endpoint_configuration {
-    types = ["REGIONAL"]
+    types            = ["PRIVATE"]
+    vpc_endpoint_ids = ["${var.api_gateway_endpoint_id}"]
   }
 }
 
