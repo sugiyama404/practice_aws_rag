@@ -21,3 +21,7 @@ output "subnet_public_subnet_1c_id" {
 output "subnet_private_subnet_1a_id" {
   value = aws_subnet.private_subnet_1a.id
 }
+
+output "api_gateway_endpoint_id" {
+  value = aws_vpc_endpoint.api_gateway.id
+}

@@ -53,7 +53,6 @@ def get_answer_from_bedrock(user_query: str, kendra_response: dict[str, str]) ->
     response_body = json.loads(response.get("body").read())
     ans = response_body['results'][0]['outputText']
     ans += f"""
-
     [参考資料]
     {kendra_response["DocumentURI"]}
     """

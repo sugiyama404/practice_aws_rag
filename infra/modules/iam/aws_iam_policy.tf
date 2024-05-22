@@ -139,5 +139,22 @@ resource "aws_iam_policy" "ecs_cloudwatch_policy" {
   })
 }
 
+resource "aws_iam_policy" "api_gateway_access" {
+  name = "${var.app_name}-api-gateway-access-policy"
+  policy = jsonencode({
+    "Version" : "2012-10-17",
+    "Statement" : [
+      {
+        "Effect" : "Allow",
+        "Action" : [
+          "execute-api:Invoke",
+          "execute-api:ManageConnections",
+          "apigateway:*",
+        ],
+        "Resource" : ["arn:aws:execute-api:${var.region}:${local.account_id}:*/*/*"]
+      }
+    ]
+  })
+}
 
 

@@ -48,11 +48,12 @@ module "lambda" {
 
 # apigateway
 module "apigateway" {
-  source            = "./modules/apigateway"
-  lambda_invoke_arn = module.lambda.lambda_invoke_arn
-  iam_role_lambda   = module.iam.iam_role_lambda
-  region            = var.region
-  app_name          = var.app_name
+  source                  = "./modules/apigateway"
+  lambda_invoke_arn       = module.lambda.lambda_invoke_arn
+  iam_role_lambda         = module.iam.iam_role_lambda
+  region                  = var.region
+  app_name                = var.app_name
+  api_gateway_endpoint_id = module.network.api_gateway_endpoint_id
 }
 
 # ECR

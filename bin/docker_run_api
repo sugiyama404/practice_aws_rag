@@ -19,6 +19,7 @@ function docker_run_api() {
   cd "${cwd}"
 
   image_id=$(docker images -q "$image_name" 2>/dev/null) || true
+  # if image_id equals to exit code 0, then image does not exist
 
   if [[ -n "$image_id" ]]; then
     echo "Image apserver exists"

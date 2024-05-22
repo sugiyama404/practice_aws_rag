@@ -25,6 +25,14 @@ function docker_run_web() {
   local port=3000
   cd "${cwd}"
 
+  apserver_container_id=$(docker ps -aqf "name=${apserver_image_name}") || true
+  if [[ -n "$apserver_container_id" ]]; then
+    echo "Container apserver exists"
+  else
+    echo "Container apserver does not exist"
+    echo "You shoud start bin/docker_run_api"
+  fi
+
   image_id=$(docker images -q "$image_name" 2>/dev/null) || true
 
   if [[ -n "$image_id" ]]; then
