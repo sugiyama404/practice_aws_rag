@@ -1,4 +1,4 @@
-# practice_bedrock
+# 社内文章検索システム：RAG(Retrieval-Augmented Generation)による高度な情報検索
 
 <p align="center">
   <img src="source/movie.gif" alt="animated" width="400">
@@ -21,7 +21,16 @@
 ![Commit Msg](https://img.shields.io/badge/Commit%20message-Eg-brightgreen.svg)
 ![Code Cmnt](https://img.shields.io/badge/code%20comment-Ja-brightgreen.svg)
 
+# 概要
 
+このREADME.mdは、AWS BedrockとKendraを活用したRAG(Retrieval-Augmented Generation)による社内文章検索システムについて説明します。本システムは、従来の検索システムよりも高度な情報検索を実現し、社内情報の活用を促進します。
+
+# 機能一覧
+この社内文章検索システムには以下の機能が含まれています：
+
++ キーワード検索: ユーザーはキーワードを入力して、関連するドキュメントを検索できます。
++ 自然言語検索: Kendraを使用することで、自然な言葉での質問に対する回答を提供します。
++ 参考文献付き: 回答には適切な参考文献が付属しています。
 
 # インフラ構成
 
@@ -29,7 +38,23 @@
   <img src="source/aws.png" alt="animated" width="400">
 </p>
 
+本システムは、以下のAWSサービスで構成されています。
 
++ S3: 社内文書を格納するストレージサービス
++ API Gateway: 検索APIを提供するサービス
++ CloudWatch: システムの監視・アラート機能を提供するサービス
++ CloudFront: 検索結果を高速に配信するサービス
++ ELB: 検索APIへの負荷分散を行うサービス
++ Fargate: コンテナ型アプリケーションを実行するサービス
++ ECR: コンテナイメージを管理するサービス
++ IAM: ユーザー認証・アクセス制御を行うサービス
++ Bedrock: 機械学習モデルをデプロイ・管理するサービス
++ Kendra: 社内文書を検索・分析するサービス
++ Lambda: システムの自動化処理を行うサービス
+
+# RAGによる高度な情報検索
+
+本システムは、RAGと呼ばれる手法を用いて、従来の検索システムよりも高度な情報検索を実現します。RAGは、検索クエリと関連する文書を自動的に抽出し、それらを基に新しい文章を生成する技術です。これにより、検索クエリに完全一致する文書だけでなく、潜在的に関連する文書も検索結果に表示することができます。
 
 
 # 起動とデプロイ方法
