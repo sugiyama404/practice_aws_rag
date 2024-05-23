@@ -147,4 +147,18 @@ bin/terraform_destroy
   <img src="source/test_result.png" alt="animated">
 </p>
 
+# Qiita記事
+
+技術詳細はQiitaに記載しています。
+
+[社内文章検索システム：RAG(Retrieval-Augmented Generation)による高度な情報検索](https://qiita.com/sugiyama404/items/84896fa87d7c6bf27c55)
+
+
+
+
+
+
+
+
+
 
