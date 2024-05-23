@@ -67,12 +67,12 @@ bin/terraform_apply
     2. indexページのデータソースセクションで、「Sync now」ボタンをクリックし、S3バケット内のすべてのファイルがインデックスに登録します。
 
 3. Bedrockのモデルを有効にする
-  1. AWS マネジメントコンソールで Amazon Bedrockにアクセスします。
-  2. 「Amazon Bedrockの使用を開始する」ボタンをクリックします。
-  3. Bedrock ダッシュボードから、モデルアクセスを選択します。
-  4. 「Modify model access」ボタンをクリックします。
-  5. ベースモデルから「Titan Text G1 - Express」を選択します。
-  6. 適切なアクセス許可を選択し、変更を保存します。
+    1. AWS マネジメントコンソールで Amazon Bedrockにアクセスします。
+    2. 「Amazon Bedrockの使用を開始する」ボタンをクリックします。
+    3. Bedrock ダッシュボードから、モデルアクセスを選択します。
+    4. 「Modify model access」ボタンをクリックします。
+    5. ベースモデルから「Titan Text G1 - Express」を選択します。
+    6. 適切なアクセス許可を選択し、変更を保存します。
 
 4. ECSからDNSをコピー
     1. AWS マネジメントコンソールで Amazon Elastic Container Serviceに移動します。
